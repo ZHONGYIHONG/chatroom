@@ -9,7 +9,14 @@ server.on('connection', function(sock) {
   clients.push(sock);
   broadcast(sock.name + " joined the chat\n", sock);
 
+  readline.setPrompt('');
+  readline.prompt();
 
+  readline.on('line', function(line) {
+    sock.write(line);
+    readline.prompt();
+  });
+  
   sock.on('data', function (data) {
     broadcast(sock.name + "> " + data, sock);
   });
